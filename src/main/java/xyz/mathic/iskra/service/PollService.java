@@ -38,7 +38,6 @@ public class PollService implements Runnable {
         connection.setRequestMethod("GET");
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);
-        int status = connection.getResponseCode();
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream()));
         String inputLine;

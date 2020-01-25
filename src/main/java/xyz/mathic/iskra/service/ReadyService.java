@@ -35,7 +35,7 @@ public class ReadyService {
         users.forEach(user -> service.scheduleAtFixedRate(new PollService(user), 0, 10, TimeUnit.SECONDS));
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 2000)
     private void check() {
         var notReady = users.stream()
                 .filter(user -> !user.getStatus().equals(User.Status.READY))

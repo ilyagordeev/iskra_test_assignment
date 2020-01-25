@@ -24,13 +24,11 @@ public class MainController {
     @MessageMapping("/status")
     @SendTo("/activity/get")
     public ReadyMessage status(ReadyMessage readyMessage) {
-        System.out.println(readyMessage.getUsers());
         return readyMessage;
     }
 
     @SendTo("/activity/get")
     public void send(ReadyMessage readyMessage) {
-        System.out.println("Send by service");
         this.template.convertAndSend("/activity/get", readyMessage);
     }
 }
