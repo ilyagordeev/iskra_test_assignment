@@ -20,14 +20,14 @@ public class ReadyService {
 
     private final MainController mainController;
 
-    private List<String> names = List.of("stretch", "jessie", "wheezy", "squeeze", "lenny",
-                                        "etch", "sarge", "woody", "potato", "slink", "hamm");
     private Set<User> users = new HashSet<>();
 
     public ReadyService(MainController mainController) {
+        this.mainController = mainController;
+        List<String> names = List.of("stretch", "jessie", "wheezy", "squeeze", "lenny",
+                "etch", "sarge", "woody", "potato", "slink", "hamm");
         names.forEach(name -> users.add(new User(name)));
         pollAll();
-        this.mainController = mainController;
     }
 
     public void pollAll() {
@@ -40,11 +40,7 @@ public class ReadyService {
         var notReady = users.stream()
                 .filter(user -> !user.getStatus().equals(User.Status.READY))
                 .collect(Collectors.toList());
-
-        if (notReady.isEmpty()) System.out.println(notReady.size());
         mainController.send(new ReadyMessage(notReady));
-
-   //     System.out.println(notReady);
     }
 
 }

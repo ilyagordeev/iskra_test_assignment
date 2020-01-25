@@ -11,9 +11,15 @@ import java.net.URL;
 
 public class PollService implements Runnable {
     private User user;
+    private URL url;
 
     public PollService(User user) {
         this.user = user;
+        try {
+            this.url = new URL("http://rd.iskrauraltel.ru:8888/contest1/status/" + this.user.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -21,7 +27,6 @@ public class PollService implements Runnable {
         try {
             poll();
         } catch (SocketTimeoutException e) {
-            System.out.println("Offline");
             user.setStatus(User.Status.OFFLINE);
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,24 +34,20 @@ public class PollService implements Runnable {
     }
 
     public void poll() throws IOException {
-        String s = "http://rd.iskrauraltel.ru:8888/contest1/status/";
-        URL url = new URL(s + user.getName());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setConnectTimeout(5000);
-        con.setReadTimeout(5000);
-        int status = con.getResponseCode();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
+        int status = connection.getResponseCode();
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+                new InputStreamReader(connection.getInputStream()));
         String inputLine;
         StringBuilder content = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             content.append(inputLine);
         }
         in.close();
-        con.disconnect();
+        connection.disconnect();
         user.setStatus(User.Status.valueOf(content.toString()));
-        System.out.print(user.getName() + " " + status + " ");
-        System.out.println(content.toString());
     }
 }
