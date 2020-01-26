@@ -2,6 +2,9 @@ package xyz.mathic.iskra.dom;
 
 import java.util.List;
 
+/**
+ * Pojo сообщения, отправляемого клиенту, содержит список игроков
+ */
 public class ReadyMessage {
 
     private List<User> users;

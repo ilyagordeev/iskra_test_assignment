@@ -1,5 +1,8 @@
 package xyz.mathic.iskra.dom;
 
+/**
+ * Pojo User - игрок
+ */
 public class User {
 
     public enum Status {
@@ -11,7 +14,7 @@ public class User {
 
     private String name;
     private Status status;
-    private int key;
+    private int key; // для реакта
     private static int count = 0;
 
 

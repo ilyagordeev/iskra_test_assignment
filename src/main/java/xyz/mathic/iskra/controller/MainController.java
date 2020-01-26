@@ -1,6 +1,5 @@
 package xyz.mathic.iskra.controller;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -19,12 +18,6 @@ public class MainController {
     @GetMapping
     public String index() {
         return "index.html";
-    }
-
-    @MessageMapping("/status")
-    @SendTo("/activity/get")
-    public ReadyMessage status(ReadyMessage readyMessage) {
-        return readyMessage;
     }
 
     @SendTo("/activity/get")

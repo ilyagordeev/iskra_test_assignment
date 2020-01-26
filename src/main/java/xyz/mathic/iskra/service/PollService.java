@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+/**
+ * Вспомогательный класс, сервис запроса статуса игрога
+ */
 public class PollService implements Runnable {
     private User user;
     private URL url;

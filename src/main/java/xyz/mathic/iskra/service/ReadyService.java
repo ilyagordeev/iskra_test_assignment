@@ -14,12 +14,14 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * Класс основного сервиса
+ */
 @EnableScheduling
 @Service
 public class ReadyService {
 
     private final MainController mainController;
-
     private Set<User> users = new HashSet<>();
 
     public ReadyService(MainController mainController) {
@@ -30,11 +32,21 @@ public class ReadyService {
         pollAll();
     }
 
+    /**
+     * Запускаем тредпул с сервисом проверки текущего статуса игроков
+     */
     public void pollAll() {
-        ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(11);
-        users.forEach(user -> service.scheduleAtFixedRate(new PollService(user), 0, 10, TimeUnit.SECONDS));
+        final int updatePeriod = 10;
+        ScheduledThreadPoolExecutor service = new ScheduledThreadPoolExecutor(users.size());
+        System.out.println(users.size());
+        users.forEach(user -> {
+            service.scheduleAtFixedRate(new PollService(user), 0, updatePeriod, TimeUnit.SECONDS);
+        });
     }
 
+    /**
+     * Метод проверки на готовность к игре, формирует список неготовых и отправляет его в контроллер
+     */
     @Scheduled(fixedRate = 2000)
     private void check() {
         var notReady = users.stream()
